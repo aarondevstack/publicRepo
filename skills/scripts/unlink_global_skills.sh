@@ -11,12 +11,24 @@ while getopts "s:" opt; do
   esac
 done
 
+
+# --- 修正：如果没有填写 -s 参数，进行交互式确认 ---
+if [ ${#SKILLS_TO_UNLINK[@]} -eq 0 ]; then
+    echo "提示: 未指定特定技能名称。"
+    read -p "是否要清理所有 Agent 目录下的所有符号链接？(y/n): " confirm
+    if [[ ! "$confirm" =~ ^[Yy]$ ]]; then
+        echo "操作已取消。"
+        exit 0
+    fi
+fi
+
 # 2. 定义各 Agent 目标路径
 AGENT_PATHS=(
     "$HOME/.gemini/antigravity/global_skills"
     "$HOME/.codex/skills"
     "$HOME/.config/opencode/skills"
     # "$HOME/.claude/skills"
+    # "$HOME/.cursor/skills"
 )
 
 echo "--- 开始清理过程 ---"
@@ -31,8 +43,8 @@ for agent_dir in "${AGENT_PATHS[@]}"; do
     echo "正在检查目录: $agent_dir"
 
     if [ ${#SKILLS_TO_UNLINK[@]} -eq 0 ]; then
-        # 场景 A：未指定参数，清理该目录下所有的符号链接
-        echo "  - 未指定技能，正在清理所有符号链接..."
+        # 场景 A：用户已确认清理全部
+        echo "  - 正在清理所有符号链接..."
         find "$agent_dir" -type l -delete
         echo "  - $agent_dir 内的符号链接已全部移除。"
     else
