@@ -24,10 +24,11 @@ fi
 
 # 2. 定义各 Agent 目标路径
 AGENT_PATHS=(
-    "$HOME/.gemini/antigravity/global_skills"
+    "$HOME/.agents/skills"
+    "$HOME/.gemini/antigravity/skills"
     "$HOME/.codex/skills"
     "$HOME/.config/opencode/skills"
-    # "$HOME/.claude/skills"
+    "$HOME/.claude/skills"
     # "$HOME/.cursor/skills"
 )
 
