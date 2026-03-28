@@ -6,3 +6,4 @@
 *.zip
 
 !libsrt.xcframework.zip
+!DepthAnythingV2SmallF16.mlpackage.zip
